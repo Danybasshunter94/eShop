@@ -57,7 +57,7 @@ public class ShopServlet extends javax.servlet.http.HttpServlet implements javax
 					CartItem item = new CartItem(book, 1);
 					shoppingCart.remove(bookId);
 					shoppingCart.put(bookId, item);
-					session.setAttribute("carrito", shoppingCart);
+					session.setAttribute("shoppingCart", shoppingCart);
 				}
 			} catch (Exception e) {
 				System.out.println("Error adding the selected book to the shopping cart!");
@@ -65,11 +65,41 @@ public class ShopServlet extends javax.servlet.http.HttpServlet implements javax
 		}
 	}
 
-	protected void updateItem() {
-
+	protected void updateItem(HttpServletRequest request, DataManager dm) {
+		
+		HttpSession session = request.getSession(true);
+		Hashtable<String, CartItem> shoppingCart = (Hashtable<String, CartItem>) session.getAttribute("shoppingCart");
+		String action = request.getParameter("action");
+		
+		if (action != null && action.equals("updateItem")) {
+		    try {
+		      String bookId = request.getParameter("bookId");
+		      String quantity = request.getParameter("quantity");
+		      CartItem item = shoppingCart.get(bookId);
+		      if (item != null) {
+		        item.setQuantity(quantity);
+		        }
+		      }
+		    catch (Exception e) {
+		      System.out.println("Error updating shopping cart!");
+		      }
+		    }
 	}
 
-	protected void deleteItem() {
+	protected void deleteItem(HttpServletRequest request, DataManager dm) {
+		HttpSession session = request.getSession(true);
+		Hashtable<String, CartItem> shoppingCart = (Hashtable<String, CartItem>) session.getAttribute("shoppingCart");
+		String action = request.getParameter("action");
+		
+		if (action != null && action.equals("deleteItem")) {
+		    try {
+		      String bookId = request.getParameter("bookId");
+		      shoppingCart.remove(bookId);
+		      }
+		    catch (Exception e) {
+		      System.out.println("Error deleting the selected item from the shopping cart!");
+		      }
+		    }
 
 	}
 
@@ -87,6 +117,9 @@ public class ShopServlet extends javax.servlet.http.HttpServlet implements javax
 		DataManager datamanager = (DataManager) request.getServletContext().getAttribute("dataManager");
 		if (action != null) {
 			switch (action) {
+			case "showCart":
+				url =  base + "ShoppingCart.jsp";
+				break;
 			case "search":
 				url = base + "SearchOutcome.jsp";
 				break;
@@ -94,29 +127,30 @@ public class ShopServlet extends javax.servlet.http.HttpServlet implements javax
 				url = base + "SelectCatalog.jsp";
 				break;
 			case "bookDetails":
-
 				url = base + "BookDetails.jsp";
 				break;
+				
 			case "checkOut":
 				url = base + "Checkout.jsp";
 				break;
+				
 			case "orderConfirmation":
 				url = base + "OrderConfirmation.jsp";
 				break;
+				
 			case "addItem":
 				addItem(request, datamanager);
 				url = base + "ShoppingCart.jsp";
-
 				break;
-			case "showCartupdateItem":
-				updateItem();
+				
+			case "updateItem":
+				updateItem(request, datamanager);
 				url = base + "ShoppingCart.jsp";
-
 				break;
-			case "showCartdeleteItem":
-				deleteItem();
+				
+			case "deleteItem":
+				deleteItem(request, datamanager);
 				url = base + "ShoppingCart.jsp";
-
 				break;
 
 			}

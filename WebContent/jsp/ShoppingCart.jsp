@@ -8,12 +8,12 @@
 <%
   String base = (String) application.getAttribute("base");
   @SuppressWarnings("unchecked")
-   Hashtable<String, CartItem> shoppingCart =
-      (Hashtable<String, CartItem>)session.getAttribute("shoppingCart");
+   Hashtable<String, CartItem> shoppingCart =(Hashtable<String, CartItem>)session.getAttribute("shoppingCart");
+  String action = request.getParameter("action");
   if (shoppingCart == null) {
     shoppingCart = new Hashtable<String, CartItem>(10);
     }
-  String action = request.getParameter("action");
+  /*String action = request.getParameter("action");
   if (action != null && action.equals("addItem")) {
     try {
       String bookId = request.getParameter("bookId");
@@ -50,7 +50,7 @@
     catch (Exception e) {
       out.println("Error deleting the selected item from the shopping cart!");
       }
-    }
+    }*/
   %>
 <html>
 <head>
