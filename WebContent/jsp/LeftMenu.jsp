@@ -6,6 +6,11 @@
   class="eshop.model.DataManager"/>
 <div class="menu"> 
   <div class="box">
+  	<form action="demo_form.asp">
+ 		 Usuario: <input type="text" name="usuario"><br>
+ 		 Contraseña: <input type="text" name="contraseña"><br>
+  		<input type="submit" value="Submit" id="enviarInfo">
+	</form>
     <div class="title">Quick Search</div>
     <p>Book Title/Author:</p>
     <form style="border: 0px solid; padding: 0; margin: 0;">
